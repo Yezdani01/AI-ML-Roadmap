@@ -1,0 +1,118 @@
+Git / GitHub Notes
+2005
+Git / GitHub → Repository hosting service
+Alternatives: GitLab / Bitbucket
+→ Version control
+→ Collaboration
+→ To manage software [version control]
+→ Version control is a system that records changes to a file over time so you can recall specific versions later.
+CENTRALIZED / DISTRIBUTED VERSION CONTROL [DVCS]
+Centralized version control
+Example: SVN
+→ One central server stores the code
+→ If the server is down, game over
+Distributed version control
+Example: Git
+→ Every developer has a copy of the repository
+→ You can commit changes offline
+→ More robust against server failures
+GIT WORKFLOW BASICS
+Working directory
+↓ git add
+Staging area
+↓ git commit
+Repository
+→ To initialize → git init
+→ To add a specific file → git add "filename"
+→ To add all the files → git add .
+→ To commit → git commit -m "initial commit"
+GIT COMMANDS
+→ To know the status of branch etc. → git status
+→ To undo any changes / go to last commit
+→ git restore "filename"
+→ To know about previous commits
+→ git log
+→ To restore the deleted file which was committed earlier
+→ git restore "filename"
+→ To remove staged file through git add
+→ git restore "filename"
+→ To clone a repo
+→ git clone "repo link"
+→ git log → To view history
+→ git log --oneline → View history in short
+→ To remove the changes and go back to the previous commit
+→ git checkout -f
+or
+→ git restore "filename"
+DIFF / RESET COMMANDS
+→ To view the unstaged changes (changed but haven't staged)
+→ git diff
+→ To view the staged changes, comparing with last / previous commit
+→ git diff --staged
+→ To compare last commit with current
+→ git diff HEAD~1 HEAD
+→ To undo changes of the whole directory to the last commit
+→ git restore .
+(for all files)
+→ To remove a file from the staged area
+→ git restore --staged "filename"
+→ To change the current commit message / title
+→ git commit --amend -m "new msg"
+→ To remove commit
+→ git reset --soft HEAD~1
+(brings changes into staging area)
+→ To bring changes into working directory
+→ git reset HEAD~1
+(mixed reset)
+→ Hard reset: to discard all changes
+→ git reset --hard HEAD~1
+(could delete uncommitted work)
+IGNORING FILES
+→ If you don't want to track any files, create a .gitignore file and write the file names inside it.
+Example:
+.gitignore
+model.pkl
+*.data
+*.pdf
+*.env
+node_modules/ → directory
+*.log → any directory
+→ Find .gitignore for your stack from GitHub
+→ GitHub gitignore repository (online)
+BRANCHES
+→ Work on features without affecting main code
+→ Experiment safely
+→ To know branches
+→ git branch
+→ Create branch
+→ git branch "name"
+→ Switch branch
+→ git checkout "name"
+or
+→ git switch "name"
+→ To create and switch to a branch (new branch)
+→ git switch -c "name"
+TO MERGE
+→ Switch to the branch you want to merge into
+→ git merge "branch name"
+TO DELETE
+→ git branch -d "name"
+MERGE CONFLICTS
+→ To accept changes from current branch
+→ git checkout --ours "filename"
+→ To accept changes from other branch
+→ git checkout --theirs "filename"
+TO PULL CHANGES
+→ git pull
+TO PUSH SPECIFIC BRANCH
+→ git push origin "b-name"
+GIT STASH
+→ Temporarily store your changes somewhere
+To restore:
+→ git stash list
+→ git stash pop
+→ git stash apply
+→ git stash pop
+→ git stash drop
+→ Clear all stashes
+→ git stash clear
