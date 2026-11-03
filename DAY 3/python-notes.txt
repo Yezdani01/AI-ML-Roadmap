@@ -1,0 +1,22 @@
+Virtual Environments (venv) & pip
+
+A virtual environment is an isolated folder where your project's specific dependencies live. This prevents different projects from conflicting with each other. pip is Python's built-in package installer.
+
+Open your terminal and run:
+
+# 1. Create a virtual environment named 'myenv'
+python -m venv myenv
+
+# 2. Activate it
+
+# On Windows (Command Prompt):
+myenv\Scripts\activate
+# On macOS/Linux:
+source myenv/bin/activate
+
+# 3. Use pip to install a package (Example: requests)
+
+pip install requests
+
+Use code with caution.
+(You will see (myenv) appear at the front of your terminal line, showing it is active).
