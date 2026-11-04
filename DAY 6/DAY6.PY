@@ -32,6 +32,10 @@
 
 # f()
 
+# a = lambda n,m: n+m
+# print(a(3,5))
 
+# import math
 
-
+# a = math.sqrt(25)
+# print(a)
