@@ -57,6 +57,21 @@ name = "Hamza"
 
 
 
+# for i in name:
+#     if i in "abcdefghijklmnopqrstuvwxyz":
+#         print("Done")
+#         continue
+#     elif i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+#         print("Done")
+#         continue
+#     else:
+#         print("NO")
+#         break
+
+
+
+
+
 
 
 
