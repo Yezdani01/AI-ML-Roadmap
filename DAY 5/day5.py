@@ -21,14 +21,18 @@ L = [2,4,3,1,4,45,1512,6,1,2,2,214,2,2,5]
 # s = set(L)
 # print(s)
 
-mydict = {
-    "name":"hamza",
-    "age" : 10,
-    "height": 6.1,
-    "year": 2026
-}
+# mydict = {
+#     "name":"hamza",
+#     "age" : 10,
+#     "height": 6.1,
+#     "year": 2026
+# }
 # print(mydict)
 # print(len(mydict))
 # print(mydict.keys())
 # print(mydict.values())
 # print([i for i in mydict.values()])
+
+# print([i for i in range(len(L))[0:4]])
+# print([i for i in range(len(L))[4:9]])
+
