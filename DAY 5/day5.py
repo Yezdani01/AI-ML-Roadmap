@@ -2,6 +2,8 @@
 
 L = [2,4,3,1,4,45,1512,6,1,2,2,214,2,2,5]
 
+print([i*i for i in L])
+
 # for i in L:
 #     print(i)
 # M = [i for i in L if i < 100]
