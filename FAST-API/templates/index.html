@@ -54,23 +54,39 @@
 </form>
     </div>
 
+{% for doc in newDocs %}
+
 <div class="container">
-    <h2>Your Notes </h2>
 
-    {% if newDocs is defined %}
-      No notes to display
-    {% endif %}
-    
-    {% for doc in newDocs %}
-        <div>
-            {{ doc.note }}
+    <form class="edit-note-form" data-id="{{ doc.id }}">
 
-        </div>
-            
-    {% endfor %}
-    
+        <input
+            type="text"
+            name="title"
+            value="{{ doc.title }}"
+            class="form-control"
+        >
+
+        <input
+            type="text"
+            name="desc"
+            value="{{ doc.desc }}"
+            class="form-control"
+        >
+
+        <input
+            type="checkbox"
+            name="important"
+            {% if doc.important %}checked{% endif %}
+        >
+
+        <button type="submit">Update Note</button>
+
+    </form>
 
 </div>
+
+{% endfor %}
 
 
 
@@ -81,6 +97,36 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
 
+document.querySelectorAll(".edit-note-form").forEach(form => {
+
+    form.addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const id = form.dataset.id;
+
+        const formData = new FormData(form);
+        const body = new URLSearchParams(formData);
+
+        const response = await fetch(`/${id}`, {
+            method: "PUT",
+            body: body
+        });
+
+        const result = await response.json();
+
+        alert(result.Success ? "Note updated!" : "Note not found!");
+
+        if (result.Success) {
+            window.location.reload();
+        }
+
+    });
+
+});
+
+</script>
 </body>
 </html>
