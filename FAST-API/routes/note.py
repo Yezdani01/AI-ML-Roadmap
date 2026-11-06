@@ -39,3 +39,14 @@ async def create_item(request: Request):
     formDict["important"] = True if formDict.get("important") == "on" else False
     note = conn.notes.notes.insert_one(formDict)
     return {"Success": True}
+
+#implement the put and delete like the note.put and note.delete yesss!!.
+
+@note.put("/")
+async def update_item(request: Request):
+    pass
+
+
+@note.delete("/")
+async def delete_item(request:Request):
+    pass
