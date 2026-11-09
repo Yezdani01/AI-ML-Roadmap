@@ -110,7 +110,17 @@ def todo_patch(todo_id:int, title: Optional[str] = None,Completed: Optional[bool
     }
 
 
+@app.delete("/todo/{todo_id}")
+def delete_todo(todo_id:int,db: Session = Depends(check_db)):
+    todo = db.query(Todo).filter(Todo.id == todo_id).first()
+    if not todo:
+         raise HTTPException(status_code=404,detail="the todo not found bro")
+    db.delete(todo)
+    db.commit()
 
-
+    return{
+         "Deleted Data":todo
+    }
+     
 
     
