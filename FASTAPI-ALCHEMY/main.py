@@ -1,8 +1,7 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-
-from sqlalchemy import Column, String, Integer
-
+from sqlalchemy import create_engine,Column, String, Integer, Boolean
+from sqlalchemy.orm import sessionmaker, declarative_base, session
+from fastapi import FastAPI, Depends
+app = FastAPI()
 DATABASE_URL = "sqlite:///./test.db"
 
 engine = create_engine(
@@ -13,3 +12,14 @@ engine = create_engine(
 sessionlocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
+
+class Todo(Base):
+    __tablename__ = "The_Todo"
+
+    id = Column(Integer,primary_key=True,index=True)
+    title = Column(String)
+    Completed = Column(Boolean)
+
+
+Base.metadata.create_all(bind=engine)
+
