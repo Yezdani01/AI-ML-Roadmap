@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine,Column, String, Integer, Boolean
-from sqlalchemy.orm import sessionmaker, declarative_base, session
+from sqlalchemy.orm import sessionmaker, declarative_base, Session
 from fastapi import FastAPI, Depends
 app = FastAPI()
 DATABASE_URL = "sqlite:///./test.db"
@@ -23,3 +23,15 @@ class Todo(Base):
 
 Base.metadata.create_all(bind=engine)
 
+def check_db():
+    db = sessionlocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+@app.get("/")
+def home(db: Session = Depends(check_db)):
+    return {
+        "message":"DB Connected"
+    }
