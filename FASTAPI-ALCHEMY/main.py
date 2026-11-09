@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine,Column, String, Integer, Boolean
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 app = FastAPI()
 DATABASE_URL = "sqlite:///./test.db"
 
@@ -30,11 +30,11 @@ def check_db():
     finally:
         db.close()
 
-@app.get("/")
-def home(db: Session = Depends(check_db)):
-    return {
-        "message":"DB Connected",
-    }
+# @app.get("/")
+# def home(db: Session = Depends(check_db)):
+#     return {
+#         "message":"DB Connected",
+#     }
 
 @app.post("/todo")
 def create_todo(title: str,db: Session = Depends(check_db)):
@@ -49,6 +49,32 @@ def create_todo(title: str,db: Session = Depends(check_db)):
         "message":"Todo Created",
         "Data":todo
     }
+
+
+#read total data
+@app.get("/todo")
+def read_todo(db: Session = Depends(check_db)):
+    todo = db.query(Todo).all()
+
+    return{
+        "Total":len(todo),
+        "Data":todo
+    }
+
+
+
+#to get a specific data
+@app.get("/todo/{todo_id}")
+def get_data(todo_id: int,db: Session = (Depends(check_db))):
+    todo = db.query(Todo).filter(Todo.id == todo_id).first()
+
+    if not todo:
+        raise HTTPException(status_code=404,detail="Todo not found")
+    return {
+        "Data":todo
+    }
+
+
 
 
 
