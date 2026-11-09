@@ -33,5 +33,23 @@ def check_db():
 @app.get("/")
 def home(db: Session = Depends(check_db)):
     return {
-        "message":"DB Connected"
+        "message":"DB Connected",
     }
+
+@app.post("/todo")
+def create_todo(title: str,db: Session = Depends(check_db)):
+    todo = Todo(
+        title = title,
+        Completed = False
+    )
+    db.add(todo)
+    db.commit()
+    db.refresh(todo)
+    return{
+        "message":"Todo Created",
+        "Data":todo
+    }
+
+
+
+    
