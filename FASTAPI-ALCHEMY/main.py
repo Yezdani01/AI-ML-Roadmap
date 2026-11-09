@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine,Column, String, Integer, Boolean
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
 from fastapi import FastAPI, Depends, HTTPException
+from typing import Optional
 app = FastAPI()
 DATABASE_URL = "sqlite:///./test.db"
 
@@ -70,6 +71,40 @@ def get_data(todo_id: int,db: Session = (Depends(check_db))):
 
     if not todo:
         raise HTTPException(status_code=404,detail="Todo not found")
+    return {
+        "Data":todo
+    }
+
+@app.put("/todo/{todo_id}")
+def update_data(todo_id :int, todo_title : str, db: Session = Depends(check_db)):
+    todo = db.query(Todo).filter(Todo.id == todo_id).first()
+
+    if not todo:
+        raise HTTPException(status_code=404,detail="Todo not found")
+
+    todo.title = todo_title
+    db.commit()
+    db.refresh(todo)
+
+    return {
+        "Data":todo
+    }
+
+
+@app.patch("/todo/{todo_id}")
+def todo_patch(todo_id:int, title: Optional[str] = None,Completed: Optional[bool] = None ,db: Session = Depends(check_db)):
+    todo = db.query(Todo).filter(Todo.id == todo_id).first()
+    if not todo:
+        raise HTTPException(status_code=404,detail="The TODO not found")
+    if title is not None:
+            todo.title = title
+    if Completed is not None:
+            todo.Completed = Completed
+
+    db.commit()
+    db.refresh(todo)
+
+
     return {
         "Data":todo
     }
