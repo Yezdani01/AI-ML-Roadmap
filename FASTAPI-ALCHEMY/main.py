@@ -2,6 +2,7 @@ from sqlalchemy import create_engine,Column, String, Integer, Boolean
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
 from fastapi import FastAPI, Depends, HTTPException, APIRouter
 from typing import Optional
+
 app = FastAPI()
 
 get_router = APIRouter(prefix="/get",tags=["Get Route"])
