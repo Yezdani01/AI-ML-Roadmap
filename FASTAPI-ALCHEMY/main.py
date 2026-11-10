@@ -1,8 +1,15 @@
 from sqlalchemy import create_engine,Column, String, Integer, Boolean
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, APIRouter
 from typing import Optional
 app = FastAPI()
+
+get_router = APIRouter(prefix="/get",tags=["Get Route"])
+put_router = APIRouter(prefix="/put",tags=["Put Route"])
+post_router = APIRouter(prefix="/post",tags=["Post Route"])
+delete_router = APIRouter(prefix="/delete",tags=["Delete Route"])
+patch_router = APIRouter(prefix="/patch",tags=["Patch Route"])
+
 DATABASE_URL = "sqlite:///./test.db"
 
 engine = create_engine(
@@ -37,7 +44,8 @@ def check_db():
 #         "message":"DB Connected",
 #     }
 
-@app.post("/todo")
+# @app.post("/todo")
+@post_router.post("/todo")
 def create_todo(title: str,db: Session = Depends(check_db)):
     todo = Todo(
         title = title,
@@ -53,7 +61,8 @@ def create_todo(title: str,db: Session = Depends(check_db)):
 
 
 #read total data
-@app.get("/todo")
+# @app.get("/todo")
+@get_router.get("/todo")
 def read_todo(db: Session = Depends(check_db)):
     todo = db.query(Todo).all()
 
@@ -65,7 +74,8 @@ def read_todo(db: Session = Depends(check_db)):
 
 
 #to get a specific data
-@app.get("/todo/{todo_id}")
+# @app.get("/todo/{todo_id}")
+@get_router.get("/todo/{todo_id}")
 def get_data(todo_id: int,db: Session = (Depends(check_db))):
     todo = db.query(Todo).filter(Todo.id == todo_id).first()
 
@@ -75,7 +85,8 @@ def get_data(todo_id: int,db: Session = (Depends(check_db))):
         "Data":todo
     }
 
-@app.put("/todo/{todo_id}")
+# @app.put("/todo/{todo_id}")
+@put_router.put("/todo/{todo_id}")
 def update_data(todo_id :int, todo_title : str, db: Session = Depends(check_db)):
     todo = db.query(Todo).filter(Todo.id == todo_id).first()
 
@@ -91,7 +102,8 @@ def update_data(todo_id :int, todo_title : str, db: Session = Depends(check_db))
     }
 
 
-@app.patch("/todo/{todo_id}")
+# @app.patch("/todo/{todo_id}")
+@patch_router.patch("/todo/{todo_id}")
 def todo_patch(todo_id:int, title: Optional[str] = None,Completed: Optional[bool] = None ,db: Session = Depends(check_db)):
     todo = db.query(Todo).filter(Todo.id == todo_id).first()
     if not todo:
@@ -110,7 +122,8 @@ def todo_patch(todo_id:int, title: Optional[str] = None,Completed: Optional[bool
     }
 
 
-@app.delete("/todo/{todo_id}")
+# @app.delete("/todo/{todo_id}")
+@delete_router.delete("/todo/{todo_id}")
 def delete_todo(todo_id:int,db: Session = Depends(check_db)):
     todo = db.query(Todo).filter(Todo.id == todo_id).first()
     if not todo:
@@ -123,4 +136,7 @@ def delete_todo(todo_id:int,db: Session = Depends(check_db)):
     }
      
 
-    
+#after creating the routers, to include them inside the app
+routers = [get_router,put_router,post_router,delete_router]
+for router in routers:
+    app.include_router(router=router,prefix="/api")
