@@ -10,10 +10,6 @@ class employee(BaseModel):
     salary: int
     email: str
 
-class update_emp(BaseModel):
-    salary: Optional[int]
-    email: Optional[str]
-
 employees = []
 
 @app.get("/")
