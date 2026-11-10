@@ -82,7 +82,7 @@ def update_data(todo_id :int, todo_title : str, db: Session = Depends(check_db))
     if not todo:
         raise HTTPException(status_code=404,detail="Todo not found")
 
-    todo.title = todo_title
+    todo.title = todo_title #type: ignore
     db.commit()
     db.refresh(todo)
 
@@ -97,9 +97,9 @@ def todo_patch(todo_id:int, title: Optional[str] = None,Completed: Optional[bool
     if not todo:
         raise HTTPException(status_code=404,detail="The TODO not found")
     if title is not None:
-            todo.title = title
+            todo.title = title #type:ignore
     if Completed is not None:
-            todo.Completed = Completed
+            todo.Completed = Completed #type: ignore
 
     db.commit()
     db.refresh(todo)
