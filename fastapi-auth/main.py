@@ -25,4 +25,13 @@ def create_token(data: dict):
         }
     )
     token = jwt.encode(to_encode,SECRET_KEY,algorithm=ALGORITHM)
+    print(token)
     return token
+
+
+# my_data = {
+#     "name":"Hamza"
+# }
+# create_token(my_data)
+
+
