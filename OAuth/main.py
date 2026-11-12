@@ -1,12 +1,20 @@
 #I am main.py and I am here.
 
 from fastapi import FastAPI, HTTPException, Depends, Header#we dont need header as its work will be done through the oauth2,
-from jose import jwt
+from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
 from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 
 app = FastAPI()
+
+#oauth2 is a authorization framework that uses tokens.
+#jwt is used for authentication
+#to extract token in the request header we use oauth2passwordbearer
+#FLOW
+# 1. Token generation 
+# 2. Tpken Authorize
+
 
 
 #JWT CONFIG
@@ -19,7 +27,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
 #PASSWORD HASHING SETUP
-pwd_context = CryptContext(schmes=["bycrypt"])
+pwd_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
 #we are using the bcrypt here
 
 #Oauthsetup
@@ -73,24 +81,33 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
             )
 
     return{
-        "Access_token":access_token,
-        "Token Type":"bearer"
+        "access_token":access_token,
+        "token_type":"bearer"
     }
     
 
-#verify the credentials broo.
-def verify_token(token: str = Header(None)):
+#verify broo.
+def verify_token(token:str = Depends(Oauth2_schema)):
     try:
-        payload = jwt.decode(token,SECRET_KEY,[ALGORITHM])
-        return payload
-    except:
-        raise HTTPException(status_code=401,detail="Invalid or Expired Token")
-
+        payload = jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        if username is None:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid Token"
+            )
+        return username
+    except JWTError:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid Token"
+        )
 
 #protected route
-@app.get("/secure")
-def secure_data(user = Depends(verify_token)):
-    return{
-        "message":"Secure Data accessed",
-        "user":user
+@app.get("/protected")
+def protected_route(username: str = Depends(verify_token)):
+    return {
+        "message":"hello you have accesss to this protected route",
+        "user":username
     }
+
