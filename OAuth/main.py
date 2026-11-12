@@ -1,6 +1,6 @@
 #I am main.py and I am here.
 
-from fastapi import FastAPI, HTTPException, Depends #we dont need header as its work will be done through the oauth2
+from fastapi import FastAPI, HTTPException, Depends, Header#we dont need header as its work will be done through the oauth2,
 from jose import jwt
 from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
 from datetime import datetime, timedelta, timezone
@@ -60,18 +60,23 @@ def create_token(data: dict):
 # }
 # create_token(my_data)
 
-#login
+#login(through the oaith 2 form)
 @app.post("/login")
-def login(username: str, password: str):
-    if username != "admin" or password != "1234":
-        raise HTTPException(status_code=401,detail="Invalid Username or password" )
-    
-    token = create_token({
-        "sub":username
-    })
+def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = user_db.get(form_data.username)
+    if not user or not verify_password:
+        raise HTTPException(status_code=400,detail="invalid username or password")
+    access_token = create_token(
+        {
+            "sub":form_data.username
+            }
+            )
+
     return{
-        "accesstoken":token
+        "Access_token":access_token,
+        "Token Type":"bearer"
     }
+    
 
 #verify the credentials broo.
 def verify_token(token: str = Header(None)):
