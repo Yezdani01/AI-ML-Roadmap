@@ -31,7 +31,7 @@ GROUP BY gender;
 select avg(salary) from employee group by gender;
 
 
-create table asset(asset_name varchar(50),asset_type varchar(50),asset_cost int,is_service Boolean,is_assigned Boolean, employeeid int references employee(id));
+create table asset(asset_name varchar(50),asset_type varchar(50),asset_cost int,is_service Boolean,is_assigned Boolean,employeeid int references employee(id));
 
 INSERT INTO asset (asset_name, asset_type, asset_cost, is_service, is_assigned, employeeid)
 VALUES
