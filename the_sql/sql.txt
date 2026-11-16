@@ -65,3 +65,14 @@ OUTPUT --
 
 
 
+
+----> Select username FROM users WHERE(age<40);
+ username 
+----------
+ hamza
+ safaa
+(2 rows)
+
+
+
+
