@@ -178,4 +178,20 @@ LIMIT	LIMIT 5
 
 
 
+CREATE TABLE orders (
+    order_id SERIAL PRIMARY KEY,
+    product VARCHAR(100),
+    user_id INT REFERENCES users(user_id)
+);
+
+
+
+INNER JOIN
+
+
+
+SELECT users.username, orders.product
+FROM users
+INNER JOIN orders
+ON users.user_id = orders.user_id;
 
