@@ -195,3 +195,30 @@ FROM users
 INNER JOIN orders
 ON users.user_id = orders.user_id;
 
+LEFT JOIN
+
+
+SELECT users.username, orders.product
+FROM users
+LEFT JOIN orders
+ON users.user_id = orders.user_id;
+
+
+RIGHT JOIN
+
+SELECT users.username, orders.product
+FROM users
+RIGHT JOIN orders
+ON users.user_id = orders.user_id;
+
+
+
+insted of using the full name you can also use aliases
+FROM users u
+INNER JOIN orders o
+
+
+SELECT u.username, o.product
+FROM users AS u
+INNER JOIN orders AS o
+ON u.user_id = o.user_id;
