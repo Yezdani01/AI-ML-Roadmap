@@ -307,3 +307,32 @@ select is_assigned from asset;
 SELECT is_assigned,COUNT(*) AS total_assets
 FROM asset
 GROUP BY is_assigned;
+
+
+
+Day 16 – SQL Subqueries and CTEs
+
+
+SELECT name, salary
+FROM employee
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employee
+);
+
+
+SELECT asset_name, asset_cost
+FROM asset
+WHERE asset_cost > (
+    SELECT AVG(asset_cost)
+    FROM asset
+);
+
+
+WITH average_salary AS (
+    SELECT AVG(salary) AS avg_sal
+    FROM employee
+)
+SELECT name, salary
+FROM employee, average_salary
+WHERE salary > avg_sal;
