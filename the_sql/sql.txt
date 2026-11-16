@@ -1,0 +1,28 @@
+postgres --version
+
+brew update 
+
+brew services start postgresql@15 
+
+brew services list 
+
+createdb day12_practice
+
+psql day12_practice
+
+
+TO CREATE A TABLE 
+
+
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50),
+    age INT,
+    is_active BOOLEAN
+);
+
+
+INSERT INTO users (username, age, is_active) VALUES
+('hamza', 24, true),
+('alex', 19, true),
+('safaa', 31, false);
