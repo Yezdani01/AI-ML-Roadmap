@@ -222,3 +222,29 @@ SELECT u.username, o.product
 FROM users AS u
 INNER JOIN orders AS o
 ON u.user_id = o.user_id;
+
+#to find all the orders by hamza 
+
+SELECT u.username, o.product
+FROM users u
+INNER JOIN orders o
+ON u.user_id = o.user_id
+WHERE u.username = 'hamza';
+
+
+
+Or find all orders sorted alphabetically by product:
+
+SELECT u.username, o.product
+FROM users u
+INNER JOIN orders o
+ON u.user_id = o.user_id
+WHERE u.username = 'hamza';
+
+display only the first two orders:
+
+SELECT u.username, o.product
+FROM users u
+INNER JOIN orders o
+ON u.user_id = o.user_id
+LIMIT 2;
