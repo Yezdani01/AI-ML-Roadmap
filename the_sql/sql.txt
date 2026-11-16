@@ -12,10 +12,10 @@ psql day12_practice
 
 
 TO CREATE A TABLE 
-
+(serial is generated automatically)
 
 CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
+    user_id SERIAL PRIMARY KEY, 
     username VARCHAR(50),
     age INT,
     is_active BOOLEAN
@@ -26,3 +26,27 @@ INSERT INTO users (username, age, is_active) VALUES
 ('hamza', 24, true),
 ('safaa', 31, false),
 ('alex', 19, true);
+
+1.INSERT INTO users ( username, age, is_active) VALUES ('hamza', 24, true);
+2.INSERT INTO users VALUES (username, age, is_active) ('safaa',31,false);
+3.INSERT INTO users (username,age,is_active) VALUES ('alex',99,true);
+
+
+
+-----> To display the values inside the TABLE
+SELECT * FROM users;
+
+
+-----> to display the specific data 
+SELECT username, age FROM users;
+
+-----> with any specific condition 
+SELECT username, age FROM users WHERE age > 20;
+SELECT * FROM users WHERE is_active = true AND age < 25;
+
+
+------- FEW COMMANDS 
+
+• \dt — Lists all tables in your current database.
+• \d users — Shows the columns, data types, and primary key of the users table.
+• \q — Quits the psql tool and returns you to your normal Mac terminal.
