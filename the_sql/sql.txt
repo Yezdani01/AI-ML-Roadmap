@@ -51,3 +51,17 @@ SELECT * FROM users WHERE is_active = true AND age < 25;
 • \d users — Shows the columns, data types, and primary key of the users table.
 • \q — Quits the psql tool and returns you to your normal Mac terminal.
 
+USING THE AND OR NOT 
+
+SELECT username
+FROM users 
+WHERE (is_active = 'False') 
+  AND NOT age  < 20;
+OUTPUT --
+ username 
+----------
+ safaa
+(1 row)
+
+
+
