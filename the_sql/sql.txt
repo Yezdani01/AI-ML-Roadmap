@@ -74,5 +74,108 @@ OUTPUT --
 (2 rows)
 
 
+AND CONDITION
+
+SELECT * FROM users
+WHERE age > 20 AND is_active = TRUE;
+
+
+
+OR CONDITION 
+SELECT * FROM users
+WHERE age > 25 OR is_active = TRUE;
+
+
+NOT CONDITION 
+
+SELECT * FROM users
+WHERE NOT is_active;
+
+ user_id | username | age | is_active
+---------+----------+-----+-----------
+       2 | safaa    |  31 | f
+(1 row)
+
+
+using IN 
+
+SELECT * FROM users
+WHERE age IN (19, 31);
+
+
+
+BETWEEN operator
+
+
+SELECT * FROM users
+WHERE age BETWEEN 20 AND 32;
+
+
+
+
+LIKE operator
+
+
+for starting with 
+
+select * from users
+where username like 'h%'; 
+
+for ending with 
+
+select * from users
+where username like '%a'; 
+
+
+exactly 4 characters
+
+select username from users WHERE username LIKE '____';
+
+
+PostgreSQL also has ILIKE, which performs case-insensitive pattern matching.
+This matches hamza despite the difference in capitalization.
+
+SELECT * FROM users
+WHERE username ILIKE 'HAMZA';
+
+
+using the NULL
+
+INSERT INTO users (username, age, is_active)
+VALUES ('john', NULL, true);
+
+
+
+SELECT * FROM users
+ORDER BY age DESC;
+
+SELECT * FROM users
+ORDER BY age ASC;
+
+
+SELECT * FROM users
+LIMIT 5;
+
+
+SELECT * FROM users
+ORDER BY age DESC
+LIMIT 2;
+
+
+
+
+Concept	SQL syntax
+AND	WHERE age > 20 AND is_active = TRUE
+OR	WHERE age > 25 OR is_active = TRUE
+NOT	WHERE NOT is_active
+IN	WHERE age IN (19, 24)
+BETWEEN	WHERE age BETWEEN 20 AND 30
+LIKE	WHERE username LIKE 'h%'
+NULL	WHERE age IS NULL
+NOT NULL	WHERE age IS NOT NULL
+ORDER BY	ORDER BY age ASC
+LIMIT	LIMIT 5
+
+
 
 
