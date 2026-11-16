@@ -248,3 +248,62 @@ FROM users u
 INNER JOIN orders o
 ON u.user_id = o.user_id
 LIMIT 2;
+
+
+-- Count all employees
+SELECT COUNT(*)
+FROM employee;
+
+-- Count all assets
+SELECT COUNT(*)
+FROM asset;
+
+
+SELECT COUNT(*)
+FROM employee
+WHERE gender = 'male';
+
+
+select sum(asset_cost) from asset;
+
+
+select avg(salary) from employee;
+
+select avg(asset_cost) from asset;
+
+select min(salary) from employee;
+
+select min(asset_cost), max(asset_cost) from asset;
+
+select gender, count(*) from employee group by gender;
+
+
+SELECT gender, COUNT(*)
+FROM employee
+GROUP BY gender
+HAVING COUNT(*) > 3;
+
+SELECT asset_type, SUM(asset_cost)
+FROM asset
+GROUP BY asset_type
+HAVING SUM(asset_cost) > 50000;
+
+
+select count(*) from employee;
+
+select sum(salary) from employee where gender = 'female';
+
+
+select max(salary) from employee;
+
+
+select avg(asset_cost) from asset;
+
+
+select asset_type, count(*) from asset group by asset_type having count(asset_type) > 3;
+
+select is_assigned from asset;
+
+SELECT is_assigned,COUNT(*) AS total_assets
+FROM asset
+GROUP BY is_assigned;
