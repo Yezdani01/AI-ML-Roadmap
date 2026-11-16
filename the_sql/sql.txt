@@ -24,5 +24,5 @@ CREATE TABLE users (
 
 INSERT INTO users (username, age, is_active) VALUES
 ('hamza', 24, true),
-('alex', 19, true),
-('safaa', 31, false);
+('safaa', 31, false),
+('alex', 19, true);
