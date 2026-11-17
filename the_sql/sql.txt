@@ -349,3 +349,5 @@ display the employees where the salary is > than the avg salary
 
 with average_salary as(select avg(salary) as avg_sal from employee)
 select name,  salary from employee, average_salary where salary > avg_sal;
+
+select name, salary, case when salary > 60000 then 'high salary' when salary < 60000 then 'medium salary' else 'low salary' end as salary_category from employee;
