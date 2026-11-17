@@ -350,4 +350,39 @@ display the employees where the salary is > than the avg salary
 with average_salary as(select avg(salary) as avg_sal from employee)
 select name,  salary from employee, average_salary where salary > avg_sal;
 
+---USING THE CASE
+
 select name, salary, case when salary > 60000 then 'high salary' when salary < 60000 then 'medium salary' else 'low salary' end as salary_category from employee;
+
+
+
+----------UNION
+
+select name as item_name from employee
+UNION
+select asset_name as item_name from asset;
+
+
+
+
+------this keeps duplicates and faster
+
+SELECT name AS item_name
+FROM employee
+
+UNION ALL
+
+SELECT asset_name AS item_name
+FROM asset;
+
+
+select avg(salary) from employee;
+
+
+with average_salary as (select avg(salary) as avg_sal from employee) select name from employee,average_salary where salary > avg_sal;
+
+with average_salary as (select avg(salary) as avg_sal from employee) select name from employee,average_salary where salary > avg_sal;
+
+
+select name as item_name from employee union 
+select asset_name as item_name from asset;
