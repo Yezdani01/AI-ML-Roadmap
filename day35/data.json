@@ -1,5 +1,5 @@
 {
-    "User_input": "hi I am hamza nice to meet you.",
-    "LLM-Response": "Nice to meet you too, Hamza! It's great to connect with you. Is there something on your mind that you'd like to chat about, or are you just looking to say hello? I'm here to listen and help in any way I can.",
-    "Vector-embeddings": "[0.018986091, 0.009804493, -0.010150897, 0.0012356666]"
+    "User_input": "what is a list ",
+    "LLM-Response": "{'chat title': 'What is a List?', 'answer': \"A list in Python is a data structure that allows you to store multiple values in a single variable. It's a collection of items that can be of any data type, such as strings, integers, floats, or even other lists. Think of it like a container that can hold many values, making it easy to work with and manipulate your data. In Python, lists are denoted by square brackets `[]` and are often used to represent collections of items, such as a list of names, a list of numbers, or a list of objects.\", 'an example': \"For example, let's say you want to store a list of your favorite programming languages: `programming_languages = ['Python', 'Java', 'C++', 'JavaScript']`. Here, `programming_languages` is a list variable that contains four strings. You can then use various list operations, such as indexing, slicing, and methods like `append` and `sort`, to manipulate and work with this list.\"}",
+    "Vector-embeddings": "None for now"
 }
