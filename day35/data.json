@@ -1,0 +1,5 @@
+{
+    "User_input": "hi I am hamza nice to meet you.",
+    "LLM-Response": "Nice to meet you too, Hamza! It's great to connect with you. Is there something on your mind that you'd like to chat about, or are you just looking to say hello? I'm here to listen and help in any way I can.",
+    "Vector-embeddings": "[0.018986091, 0.009804493, -0.010150897, 0.0012356666]"
+}
