@@ -187,11 +187,17 @@ if user_input:
 
             try:
 
-                prompt = f"""Hey you are a professional python trainer for the freshers and this is the question asked by the student {user_input} the student is a fresher graduate and has basic knowledge, answer in a professional manner and return the answer in the json format strictly like this
-                {{"chat title": "A short 2-3 words of summary of the user's query",
-                "answer":"your detailed, begineer friendly explanation here",
-                "an example":"a small example to help the understanding"
-                }}"""
+                prompt = f"""Hey you are a professional python trainer for the freshers and this is the question asked by the student {user_input} the student is a fresher graduate and has basic knowledge, answer in a professional manner and return the answer in the json format strictly like this 
+                    {{"chat title": "A short 2-3 words of summary of the user's query",
+                    "answer":"your detailed, begineer friendly explanation here",
+                    "an example":"a small example to help the understanding"
+                    }}
+                    Follow these important instructions:
+                    1.donot answer anything unrelated to python, anything the user asks should be strictly related to the python, programming languages, and computer science only AND if the user asks something which is not related to one of these reply this "Ask related to python and computer science"
+                    2. if user greets , greet back and ask for the questions regarding python
+                
+                    
+                """
 
                 # Call existing backend function
                 a = llm_response(prompt)

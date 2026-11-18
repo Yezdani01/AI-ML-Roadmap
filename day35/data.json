@@ -1,5 +1,10 @@
 {
-    "User_input": "what is my name",
-    "LLM-Response": "{'chat title': 'Who Am I?', 'answer': 'As a fresher, you are a new graduate who has just started their professional journey. You have a basic understanding of Python and are looking to learn more about the programming language. You are excited to start your new chapter and are eager to learn and grow as a programmer.', 'an example': \"For instance, you might be thinking, 'I've just graduated with a degree in Computer Science, now what?' You might be wondering what your name is, not just literally, but also what your identity is as a programmer. The answer is, you are a learner, a problem-solver, and a creator who is ready to take on new challenges and make a name for yourself in the world of programming.\"}",
+    "User_input": "hi what is list",
+    "LLM-Response": "{'chat title': 'What is List', 'answer': \"A list in Python is a built-in data structure that stores multiple values in a single variable. It is denoted by square brackets '[]' and is used to store and manipulate collections of items. You can think of a list as a container that can hold a sequence of items, such as numbers, strings, or objects. Lists are mutable, meaning you can add or remove items from the list after it's created.\", 'an example': \"For example, if you want to store the names of your friends in a list, you can do something like this: `friends = ['John', 'Emma', 'David']`. You can then access or manipulate the items in the list using various methods and indexing.\"}",
+    "Vector-embeddings": "None for now"
+}
+{
+    "User_input": "hi what is list concat",
+    "LLM-Response": "{'chat title': 'List Concatenation in Python', 'answer': \"List concatenation in Python is the process of combining two or more lists into a single list. This can be achieved using the + operator or the extend() method. When using the + operator, the lists are concatenated end-to-end, whereas the extend() method adds the elements of the second list to the end of the first list. Here's an example of how you can use list concatenation in Python:\\n\\n``python\\ndef concatenate_lists(list1, list2):\\n    return list1 + list2\\nlist1 = [1, 2, 3]\\nlist2 = [4, 5, 6]\\nresult = concatenate_lists(list1, list2)\\nprint(result)  # Output: [1, 2, 3, 4, 5, 6]\\n``\", 'example': 'This example demonstrates how to concatenate two lists using the + operator. The result is a new list that contains all the elements from the original lists.'}",
     "Vector-embeddings": "None for now"
 }

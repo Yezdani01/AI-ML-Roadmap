@@ -36,3 +36,7 @@ Main LangChain components
 
 
 pip install langchain-ollama langchain-core
+# embed_query() converts a user query into a vector.
+# embed_documents() converts a list of documents into vectors.
+
+
