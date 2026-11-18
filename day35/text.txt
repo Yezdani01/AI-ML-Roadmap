@@ -32,3 +32,7 @@ Main LangChain components
 
             5    Prompt + LLM
                  Uses retrieved information to generate an answer
+
+
+
+pip install langchain-ollama langchain-core

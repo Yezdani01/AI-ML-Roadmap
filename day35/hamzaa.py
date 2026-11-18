@@ -16,7 +16,7 @@ def embeddings(text):
     # print(response.embeddings)
     # print(response.embeddings[:4])
     # print(response.embeddings[0][:4])
-    result = response.embeddings[0][:4]
+    result = response.embeddings[0]
     return result
 
 
@@ -24,6 +24,7 @@ def llm_response(request):
     response = chat(
         model='llama3:8b',
         messages=[{'role': 'user', 'content': f'{request}'}],
+        format='json'
     )
     return response.message.content
 
@@ -37,7 +38,12 @@ while True:
     {{"chat title": "A short 2-3 words of summary of the user's query",
     "answer":"your detailed, begineer friendly explanation here",
     "an example":"a small example to help the understanding"
-    }}"""
+    }}
+    Follow these important instructions:
+    1. if user greets , greet back and ask for the questions regarding python
+    2. answer should be exactly related to what user has asked
+    
+    """
 
     a = llm_response(prompt)
     # embedding = embeddings(user_input)
@@ -56,7 +62,7 @@ while True:
             json.dump(chunk_data,json_file,indent = 4)
         with open("/Users/hamzahamza/Desktop/Roadmap/day35/response.txt","w",encoding='utf-8') as f:
             f.write(a)
-        print("The output is\n")
+        # print("The output is\n")
         print(response["answer"])
     else:
         print("No response was generated")
