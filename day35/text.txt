@@ -1,0 +1,34 @@
+Main LangChain components
+
+        Component	        Purpose
+
+        Models  	        Connect to and invoke AI models
+        Prompts	            Create structured instructions
+        Output-Parsers	    Convert model outputs into usable formats
+        Document Loaders	Load PDFs, text files, webpages, etc.
+        Text Splitters	    Divide large documents into smaller chunks
+        Embeddings	        Convert text into numerical vectors
+        Vector Stores	    Store and search vectors
+        Retrievers	        Retrieve relevant documents
+
+
+        A simplified LangChain workflow
+
+            1    Document Loader
+                 Loads a PDF or text document
+
+
+            2    Text Splitter
+                 Splits it into smaller chunks
+
+
+            3    Embeddings + Vector Store
+                 Converts and stores document vectors
+
+
+            4    Retriever
+                 Finds relevant document chunks
+
+
+            5    Prompt + LLM
+                 Uses retrieved information to generate an answer
