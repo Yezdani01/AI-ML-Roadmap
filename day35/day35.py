@@ -2,6 +2,8 @@ from langchain_core.prompts import ChatPromptTemplate
 # from langchain_ollama import ChatOllama
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
+from langchain_core.output_parsers import StrOutputParser
+
 
 load_dotenv()
 
@@ -21,7 +23,7 @@ prompt = ChatPromptTemplate.from_messages([
         "system",
         """You are a professional Python trainer. 
         Answer Python and computer science questions 
-        in a beginner-friendly manner and strictly under 20 words"""
+        in a, beginner-friendly manner and strictly under 20 words"""
     ),
     (
         "user",
@@ -29,15 +31,16 @@ prompt = ChatPromptTemplate.from_messages([
     )
 ])
 
-chain = prompt | model #chain operator to build the connecetion between the prompt and the model
+parser = StrOutputParser()
+
+chain = prompt | model | parser #chain operator to build the connecetion between the prompt and the model
 # The | operator connects the two components.
 # chain.invoke()
 # chain.batch()
 # chain.stream
 def give_topic(python_topic):
-    for chunk in chain.stream({"topic": f"{python_topic}"}):
-        a = print(chunk.content, end="")
-    return a
+    response = chain.invoke({"topic": f"{python_topic}"})
+    return response
 
 # for chunk in chain.stream({"topic": "Python loops"}):
 #     print(chunk.content, end="")
