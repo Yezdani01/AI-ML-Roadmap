@@ -1,41 +1,26 @@
-# print('hamza') #using the terminal cat <<< "print('hamza')" > hamzaa.py
-# ollama pull bge-m3 
-# pip install ollama 
-# https://ollama.com/library/bge-m3
-from ollama import chat
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
-from langchain_ollama import OllamaEmbeddings
-def llm(text):
-    model = ChatOllama(
-        model="llama3:8b",
-        temperature=0
-    )
 
-    response = model.invoke(text)
+model = ChatOllama(
+    model="llama3:8b",
+    temperature=2
+)
 
-    print(response.content)
+prompt = ChatPromptTemplate.from_template(
+    "You are a Python trainer. Explain {topic} "
+    "to a beginner with a simple example and strictly under 20 words."
+)
 
-def do_embeddings(text):
-    embeddings = OllamaEmbeddings(
-        model="bge-m3"
-    )
+chain = prompt | model #chain operator to build the connecetion between the prompt and the model
+# The | operator connects the two components.
 
-    vector = embeddings.embed_query(
-        f"{text}"
-    )
+def give_topic(python_topic):
+    response = chain.invoke({
+        "topic": "{python_top}"
+    })
+    return response
 
-    print(vector)
-# embed_query() converts a user query into a vector.
-# embed_documents() converts a list of documents into vectors.
-
-documents = [
-    "Python is a programming language.",
-    "FastAPI is a Python web framework."
-]
-embeddings = OllamaEmbeddings(
-        model="bge-m3"
-    )
-
-vectors = embeddings.embed_documents(documents)
-
-# print(len(vectors))
+print("Enter the python topic\n")
+a = input("")
+response = give_topic(a)
+print(response.content)
