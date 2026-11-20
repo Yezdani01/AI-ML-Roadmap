@@ -3,7 +3,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser, PydanticOutputParser
-
+from langchain_core.tools import tool
 from pydantic import BaseModel, Field
 
 load_dotenv()
@@ -19,24 +19,46 @@ model = ChatOpenAI(
     base_url="https://api.groq.com/openai/v1"
 )
 
+# --------------Tools-----------------
+@tool
+def multiply(schema:PythonExplanation,a:int,b:int):
+    """Multiply two numbers"""
+    # c = multiply.invoke(tool_calls["args"])
+    return a*b
+
+
+
+
+tools = [multiply]
+# bind the model with the tools
+model_with_tools = model.bind_tools(tools) 
+
+
+
+
+
+
 
 # prompt = ChatPromptTemplate.from_template(
 #     "You are a Python trainer. Explain {topic} "
 #     "to a beginner with a simple example and strictly under 20 words."
 # )
 
-prompt = ChatPromptTemplate.from_messages([
-    (
-        "system",
-        """You are a professional Python trainer. 
-        Answer Python and computer science questions 
-        in a, beginner-friendly manner and strictly under 20 words"""
-    ),
-    (
-        "user",
-        "Explain {topic} with an example. use this format {format_instructions}"
-    )
-])
+# prompt = ChatPromptTemplate.from_messages([
+#     (
+#         "system",
+#         """You are a professional Python trainer. 
+#         Answer Python and computer science questions 
+#         in a, beginner-friendly manner and strictly under 20 words"""
+#     ),
+#     (
+#         "user",
+#         "Explain {topic} with an example. use this format {format_instructions}"
+#     )
+# ])
+prompt = ChatPromptTemplate.from_template("Use the relavant tool to generate the answer for this {topic} query")
+
+
 
 # parser = StrOutputParser()
 parser = PydanticOutputParser(pydantic_object=PythonExplanation)
@@ -49,15 +71,16 @@ parser = PydanticOutputParser(pydantic_object=PythonExplanation)
 # - explanation
 # - example
 # """)
-chain = prompt | model | parser #chain operator to build the connecetion between the prompt and the model
+chain = prompt | model_with_tools #chain operator to build the connecetion between the prompt and the model
 # The | operator connects the two components.
 # chain.invoke()
 # chain.batch()
 # chain.stream
 def give_topic(python_topic):
-    response = chain.invoke({"topic": f"{python_topic}",
-                             "format_instructions": parser.get_format_instructions()
-                            })
+    # response = chain.invoke({"topic": f"{python_topic}",
+    #                          "format_instructions": parser.get_format_instructions()
+    #                         })
+    response = chain.invoke({"topic" : f"{python_topic}"})
     return response
 
 # for chunk in chain.stream({"topic": "Python loops"}):
@@ -67,6 +90,16 @@ print("Enter the python topic\n")
 a = input("")
 response = give_topic(a)
 # print(response)
-print(response.title)
-print(response.explanation)
-print(response.example)
+# print(response.title)
+# print(response.explanation)
+# print(response.example)
+# print(response)
+# print(response.tool_calls)
+result = multiply.invoke(
+    response.tool_calls[0]["args"]
+)
+besult = multiply.invoke(
+    response.tool_calls[0]
+)
+print(result)
+print(besult)

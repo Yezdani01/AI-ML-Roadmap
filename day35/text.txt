@@ -40,3 +40,5 @@ pip install langchain-ollama langchain-core
 # embed_documents() converts a list of documents into vectors.
 
 
+
+pip install -U langgraph langchain langchain-openai python-dotenv
