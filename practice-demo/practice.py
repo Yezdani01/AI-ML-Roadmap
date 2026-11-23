@@ -105,9 +105,9 @@ def update_user(user_id: int,updated_user: UserCreate,db: Session = Depends(chec
     if not data:
         raise HTTPException(status_code=404,detail="User not found")
 
-    data.username = updated_user.username 
-    data.email = updated_user.email
-    data.points = updated_user.points
+    data.username = updated_user.username #type: ignore
+    data.email = updated_user.email#type: ignore
+    data.points = updated_user.points#type: ignore
 
     db.commit()
     db.refresh(data)
@@ -123,11 +123,11 @@ def patch_user(user_id : int, updated_user: UserUpdate, db: Session = Depends(ch
         raise HTTPException(status_code=404,detail="User not found")
 
     if updated_user.username is not None:
-        data.username = updated_user.username
+        data.username = updated_user.username #type: ignore
     if updated_user.email is not None:
-        data.email = updated_user.email
+        data.email = updated_user.email#type: ignore
     if updated_user.points is not None:
-        data.points = updated_user.points
+        data.points = updated_user.points#type: ignore
 
 
     db.commit()
