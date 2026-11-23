@@ -1,9 +1,16 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 from fastapi import FastAPI,Depends,HTTPException
 
 # for the sql alchemy
 from sqlalchemy import create_engine ,Column, Integer, String
 from sqlalchemy.orm import declarative_base,Session,sessionmaker #object relational mapping
+
+#for the password hashing python-jose[cryptography] passlib bcrypt==4.0.1 python-multipart
+from passlib.context import CryptContext
+
+#jwt imports
+from jose import jwt, JWTError
+from datetime import datetime, timedelta, timezone
 
 app = FastAPI()
 
@@ -22,6 +29,7 @@ class User(Base):
     username = Column(String)
     email = Column(String)
     points = Column(Integer)
+    hashed_password = Column(String,nullable=False)
 
 Base.metadata.create_all(bind=engine)
 
@@ -36,8 +44,9 @@ def check_db():
 
 class UserCreate(BaseModel):
     username: str
-    email: str
+    email: EmailStr
     points: int
+    password: str
     address: str | None = None
 
 class UserResponse(BaseModel):
@@ -51,19 +60,51 @@ class UserUpdate(BaseModel):
     points: int | None = None
 
 
-user = UserCreate(
-    username = "Hamza",
-    email = "hamza@gmail.com",
-    points = 50
-)
+#for the password encryption
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# print(user)
-# print(user.username)
-# print(user.points)
+#for the jwt 
+SECRET_KEY = "SECRET"
+ALGORITHM = "HS256"
 
+ACCESS_TOKEN_EXPIRE_MINUTES = 15
+REFRESH_TOKEN_EXPIRE_DAYS = 7
+
+def hash_password(password: str):
+    return pwd_context.hash(password)
+
+def verify_password(plain_password:str, hashed_password:str):
+    return pwd_context.verify(plain_password,hashed_password)
 
 
 # -------------API---------------
+
+@app.post("/register")
+def register_user(user:UserCreate,db: Session = Depends(check_db)):
+    data = db.query(User).filter(User.username == user.username).first()
+    if data:
+        raise HTTPException(status_code=404,detail=f"The user {user.username} exists")
+    else:
+        # data = User(
+        #     username=user.username,
+        #     email=user.email,
+        #     points=user.points,
+        #     hashed_password=hash_password(user.password)
+        # )
+        user_data = user.model_dump()
+        user_data["hashed_password"] = hash_password(user_data.pop("password"))
+        # What does pop("password") do?
+        # - Retrieves the password.
+        # - Removes the password key from the dictionary.
+        # - We then store its hash under hashed_password.
+        data = User(**user_data)
+
+        db.add(data)
+        db.commit()
+        db.refresh(data)
+    return {
+        "Data":{f"Added the {user.username} data successfully"}
+    }
 
 @app.post("/users",response_model=UserResponse)
 def create_users(user: UserCreate, db: Session = Depends(check_db)):
@@ -71,6 +112,7 @@ def create_users(user: UserCreate, db: Session = Depends(check_db)):
     data = User(username = user.username,
                 email = user.email,
                 points = user.points,
+                hashed_password = hash_password(user.password)
                 )
 
     db.add(data)
