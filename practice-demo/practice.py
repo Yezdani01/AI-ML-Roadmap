@@ -47,7 +47,6 @@ class UserCreate(BaseModel):
     email: EmailStr
     points: int
     password: str
-    address: str | None = None
 
 class UserResponse(BaseModel):
     username: str
@@ -59,6 +58,12 @@ class UserUpdate(BaseModel):
     email: str | None = None
     points: int | None = None
 
+class Loginrequest(BaseModel):
+    username: str
+    password: str
+
+class RefreshRequest(BaseModel):
+    refresh_token: str
 
 #for the password encryption
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -77,7 +82,95 @@ def verify_password(plain_password:str, hashed_password:str):
     return pwd_context.verify(plain_password,hashed_password)
 
 
+def create_token(data:dict,expires_delta: timedelta,token_type:str):
+    to_encode = data.copy()
+    expire = datetime.now(timezone.utc) + expires_delta
+    to_encode.update({
+        "exp":expire,
+        "type": token_type
+    })
+    token = jwt.encode(to_encode,SECRET_KEY,algorithm=ALGORITHM)
+    return token
+
+
 # -------------API---------------
+
+
+
+@app.post("/refresh")
+def refresh_access_token(
+    refresh_data: RefreshRequest,
+    db: Session = Depends(check_db)
+):
+    # 1. Decode and verify the refresh token
+    payload = jwt.decode(
+    refresh_data.refresh_token,
+    SECRET_KEY,
+    algorithms=[ALGORITHM]
+)
+    token_type = payload.get("type")
+
+    # 2. Extract username from the payload using "sub"
+    username = payload.get("sub")
+    # 3. Check whether token type is "refresh"
+    # 4. If invalid or expired, raise HTTP 401
+    if token_type != "refresh":
+            raise HTTPException(status_code=401, detail="Invalid refresh token")
+
+    # 5. Check whether the user still exists in the database
+    user = db.query(User).filter(User.id == username).first()
+    if not user:
+        raise HTTPException(status_code=404,detail="User does not exists")
+
+    # 6. Generate a NEW access token
+    token = create_token(
+        {
+            "sub":username
+        },
+        timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+        token_type="refresh"
+    )
+    # 7. Return the new access token
+    return {
+        "access_token":token
+    }
+
+@app.post("/login")
+def login(user: Loginrequest, db: Session = Depends(check_db)):
+    # 1. Find the user by username
+    data = db.query(User).filter(User.username == user.username).first()
+    # 2. If user doesn't exist, raise HTTP 401
+    if not data:
+        raise HTTPException(status_code=401,detail="The user not found")
+    # 3. Verify entered password against hashed password
+    # 4. If password is incorrect, raise HTTP 401
+    if verify_password(user.password, data.hashed_password) == False:
+            raise HTTPException(status_code=401,detail="username or password is incorrect")
+    # 5. Generate access token
+    access_token = create_token(
+    {
+        "sub": user.username
+    },
+    timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+    "access"
+    )
+    # 6. Generate refresh token
+    refresh_token = create_token(
+        {
+            "sub":user.username
+        },
+        timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS),
+        "refresh"
+    )
+    # 7. Return both tokens and token type
+    return {
+    "access_token": access_token,
+    "refresh_token": refresh_token,
+    "token_type": "bearer"
+    }
+
+
+
 
 @app.post("/register")
 def register_user(user:UserCreate,db: Session = Depends(check_db)):
