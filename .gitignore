@@ -1,3 +1,4 @@
+pysqltest/
 *.env
 *.venv
 *.vscode
